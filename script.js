@@ -1,33 +1,40 @@
 document.addEventListener('DOMContentLoaded', () => {
     const mainContent = document.querySelector('main');
     const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('.section'); 
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('nav-menu');
     const contactForm = document.getElementById('contact-form');
     const signupForm = document.getElementById('signup-form');
 
-    mainContent.addEventListener('mouseenter', () => {
-        const hiddenSections = document.querySelectorAll('.hidden-section');
-        hiddenSections.forEach(section => {
-            section.classList.remove('hidden-section');
+    const showSection = (targetId) => {
+        sections.forEach(section => {
+            section.classList.add('hidden-section');
         });
-    }, { once: true });
+
+        const activeSection = document.querySelector(targetId);
+        if (activeSection) {
+            activeSection.classList.remove('hidden-section');
+        }
+
+        if (navMenu.classList.contains('show')) {
+            navMenu.classList.remove('show');
+        }
+    };
 
     navLinks.forEach(link => {
         link.addEventListener('click', (event) => {
             event.preventDefault();
             const targetId = link.getAttribute('href');
+            showSection(targetId);
+
+            // Smooth scroll to the section
             const targetSection = document.querySelector(targetId);
-            
             if (targetSection) {
                 targetSection.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
                 });
-            }
-
-            if (navMenu.classList.contains('show')) {
-                navMenu.classList.remove('show');
             }
         });
     });
@@ -35,6 +42,10 @@ document.addEventListener('DOMContentLoaded', () => {
     hamburger.addEventListener('click', () => {
         navMenu.classList.toggle('show');
     });
+
+    // Handle initial page load
+    const initialSectionId = window.location.hash || '#home';
+    showSection(initialSectionId);
 
     contactForm.addEventListener('submit', (event) => {
         event.preventDefault();
