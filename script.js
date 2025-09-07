@@ -1,40 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const mainContent = document.querySelector('main');
     const navLinks = document.querySelectorAll('.nav-link');
-    const sections = document.querySelectorAll('.section'); 
     const hamburger = document.getElementById('hamburger');
     const navMenu = document.getElementById('nav-menu');
     const contactForm = document.getElementById('contact-form');
     const signupForm = document.getElementById('signup-form');
 
-    const showSection = (targetId) => {
-        sections.forEach(section => {
-            section.classList.add('hidden-section');
-        });
-
-        const activeSection = document.querySelector(targetId);
-        if (activeSection) {
-            activeSection.classList.remove('hidden-section');
-        }
-
-        if (navMenu.classList.contains('show')) {
-            navMenu.classList.remove('show');
-        }
-    };
-
     navLinks.forEach(link => {
         link.addEventListener('click', (event) => {
             event.preventDefault();
             const targetId = link.getAttribute('href');
-            showSection(targetId);
-
-            // Smooth scroll to the section
             const targetSection = document.querySelector(targetId);
+
             if (targetSection) {
                 targetSection.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
                 });
+            }
+
+            if (navMenu.classList.contains('show')) {
+                navMenu.classList.remove('show');
             }
         });
     });
@@ -43,16 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
         navMenu.classList.toggle('show');
     });
 
-    // Handle initial page load
-    const initialSectionId = window.location.hash || '#home';
-    showSection(initialSectionId);
-
     contactForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const name = document.getElementById('name').value.trim();
         const email = document.getElementById('email').value.trim();
         const message = document.getElementById('message').value.trim();
-        
+
         if (name === '' || email === '' || message === '') {
             alert('Please fill in all required fields.');
             return;
@@ -62,14 +43,14 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please enter a valid email address.');
             return;
         }
-        
+
         alert('Thank you for your message! I will get back to you soon.');
         contactForm.reset();
     });
 
     signupForm.addEventListener('submit', (event) => {
         event.preventDefault();
-        
+
         const firstName = document.getElementById('firstName').value.trim();
         const lastName = document.getElementById('lastName').value.trim();
         const dob = document.getElementById('dob').value.trim();
@@ -98,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Please enter a valid 10-digit phone number.');
             return;
         }
-    
+
         if (!/^\d{6}$/.test(pincode)) {
             alert('Please enter a valid 6-digit pincode.');
             return;
@@ -113,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Passwords do not match.');
             return;
         }
-    
+
         alert('Registration successful! Thank you for signing up.');
         signupForm.reset();
     });
